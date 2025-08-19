@@ -6,21 +6,25 @@ Este é um projeto simples em Java criado para demonstrar os conceitos de gerenc
 
 O programa utiliza a biblioteca externa joda-time para obter e formatar a data e a hora atuais, imprimindo o resultado no console. O principal objetivo é ilustrar como o Maven resolve dependências, compila o código e gera um artefato final executável (.jar).
 
+
 **Pré-requisitos**
 Antes de começar, garanta que você tenha as seguintes ferramentas instaladas e configuradas no seu sistema:
 
 JDK (Java Development Kit) - Versão 21 ou superior.
 Apache Maven - Versão 3.9 ou superior.
 
+
 **Git**
 **Como Configurar e Executar**
 Siga as instruções abaixo para clonar, construir e executar o projeto.
 
+
 **1. Clonar o Repositório**
 Abra o seu terminal e clone o repositório para a sua máquina local:
 
-git clone <URL_DO_SEU_REPOSITORIO_AQUI>
+git clone https://github.com/jdN0106/Gerencia-de-dependencia-GIT
 cd Exercicio-Dependencia
+
 
 **2. Construir o Projeto (Build)**
 O Maven cuidará de todo o processo de download de dependências e compilação. Execute o seguinte comando na raiz do projeto:
