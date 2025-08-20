@@ -1,5 +1,5 @@
 **Exercicio-Dependencia**
-
+Descrição do Projeto: Segunda versão da descrição do projeto.
 
 **Descrição do Projeto**
 Este é um projeto simples em Java criado para demonstrar os conceitos de gerenciamento de dependências e automação de build utilizando o Apache Maven.
