@@ -1,4 +1,5 @@
 **Exercicio-Dependencia**
+Descrição do Projeto: Primeira versão da descrição do projeto.
 
 
 **Descrição do Projeto**
