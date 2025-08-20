@@ -1,5 +1,13 @@
 **Exercicio-Dependencia**
-Descrição do Projeto: Primeira versão da descrição do projeto.
+Descrição do Projeto: Versão final após resolver o conflito.
+
+Para cumprir a etapa de simulação de conflito, criei duas branches (`altera-v1` e `altera-v2`) que modificavam a mesma linha no `README.md`.
+Ao tentar juntar as duas na branch `main` através de um Pull Request, o Git gerou um conflito, pois não sabia qual versão manter.
+
+**Para resolver, eu segui estes passos:**
+1.  Trouxe o conflito para o meu ambiente local.
+2.  Abri o arquivo `README.md` e editei o texto manualmente, removendo as marcações de conflito e escolhendo a versão final.
+3.  Fiz um novo commit contendo a resolução e o enviei para o GitHub, finalizando o processo.
 
 
 **Descrição do Projeto**
@@ -24,6 +32,7 @@ Siga as instruções abaixo para clonar, construir e executar o projeto.
 Abra o seu terminal e clone o repositório para a sua máquina local:
 
 git clone https://github.com/jdN0106/Gerencia-de-dependencia-GIT
+
 cd Exercicio-Dependencia
 
 
@@ -50,5 +59,7 @@ java -jar target/Exercicio-Dependencia-1.0-SNAPSHOT-jar-with-dependencies.jar
 A saída no console deverá ser semelhante a esta:
 
 Data atual: 19/08/2025
+
 Hora atual: 18:10:00
+
 O projeto foi construído e as dependências foram resolvidas com sucesso!
