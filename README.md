@@ -1,65 +1,48 @@
-**Exercicio-Dependencia**
-Descrição do Projeto: Versão final após resolver o conflito.
+# Gerenciamento de Dependências com Maven e Testes Unitários
 
-Para cumprir a etapa de simulação de conflito, criei duas branches (`altera-v1` e `altera-v2`) que modificavam a mesma linha no `README.md`.
-Ao tentar juntar as duas na branch `main` através de um Pull Request, o Git gerou um conflito, pois não sabia qual versão manter.
+Este projeto é um exemplo simples em Java para demonstrar os conceitos de gerenciamento de dependências com Apache Maven e a importância dos testes unitários com JUnit e Mockito.
 
-**Para resolver, eu segui estes passos:**
-1.  Trouxe o conflito para o meu ambiente local.
-2.  Abri o arquivo `README.md` e editei o texto manualmente, removendo as marcações de conflito e escolhendo a versão final.
-3.  Fiz um novo commit contendo a resolução e o enviei para o GitHub, finalizando o processo.
+O código foi refatorado para seguir boas práticas de desenvolvimento, como a separação de responsabilidades e a injeção de dependências, permitindo que a lógica de negócio seja testada de forma isolada.
 
+## ✨ Tecnologias Utilizadas
 
-**Descrição do Projeto**
-Este é um projeto simples em Java criado para demonstrar os conceitos de gerenciamento de dependências e automação de build utilizando o Apache Maven.
+- **Java** (JDK 11+)
+- **Apache Maven** (para gerenciamento de dependências e build do projeto)
+- **Joda-Time** (biblioteca externa para manipulação de data e hora)
+- **JUnit 4** (framework para a criação dos testes unitários)
+- **Mockito** (framework para a criação de "mocks" ou simulações de dependências nos testes)
 
-O programa utiliza a biblioteca externa joda-time para obter e formatar a data e a hora atuais, imprimindo o resultado no console. O principal objetivo é ilustrar como o Maven resolve dependências, compila o código e gera um artefato final executável (.jar).
+## ⚙️ Pré-requisitos
 
+Antes de começar, garanta que você tenha os seguintes softwares instalados:
+- **Java Development Kit (JDK)** - Versão 11 ou superior.
+- **Apache Maven** - Versão 3.6 ou superior.
 
-**Pré-requisitos**
-Antes de começar, garanta que você tenha as seguintes ferramentas instaladas e configuradas no seu sistema:
+## 🚀 Como Compilar e Testar o Projeto
 
-JDK (Java Development Kit) - Versão 21 ou superior.
-Apache Maven - Versão 3.9 ou superior.
+1.  Clone o repositório para a sua máquina local:
+    ```bash
+    git clone https://github.com/SEU-USUARIO/Gerencia-de-dependencia-GIT.git
+    cd Gerencia-de-dependencia-GIT
+    ```
+2.  Use o Maven para compilar o projeto e rodar a suíte de testes unitários:
+    ```bash
+    mvn clean package
+    ```
+    Este comando irá baixar as dependências, compilar o código, executar os 10 testes que criamos e, se tudo passar, empacotar a aplicação em um arquivo `.jar`.
 
+## ▶️ Como Executar a Aplicação
 
-**Git**
-**Como Configurar e Executar**
-Siga as instruções abaixo para clonar, construir e executar o projeto.
+Após o comando `mvn clean package` ser executado com sucesso, um artefato executável será gerado na pasta `target/`.
 
+Para executar o programa, utilize o seguinte comando no seu terminal:
 
-**1. Clonar o Repositório**
-Abra o seu terminal e clone o repositório para a sua máquina local:
-
-git clone https://github.com/jdN0106/Gerencia-de-dependencia-GIT
-
-cd Exercicio-Dependencia
-
-
-**2. Construir o Projeto (Build)**
-O Maven cuidará de todo o processo de download de dependências e compilação. Execute o seguinte comando na raiz do projeto:
-
-mvn clean package
-
-Este comando irá:
-
-Limpar compilações anteriores (pasta target).
-
-Baixar a dependência joda-time.
-
-Compilar o código-fonte.
-
-Gerar um arquivo .jar executável dentro da pasta target.
-
-**3. Executar o Programa**
-Após o build ser concluído com sucesso, execute o programa com o seguinte comando:
-
+```bash
 java -jar target/Exercicio-Dependencia-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
 
-A saída no console deverá ser semelhante a esta:
+A saída no console será a saudação correspondente à hora atual do seu sistema. Por exemplo:
 
-Data atual: 19/08/2025
-
-Hora atual: 18:10:00
-
-O projeto foi construído e as dependências foram resolvidas com sucesso!
+```
+Boa noite! A data e hora atuais são: ############
+```
