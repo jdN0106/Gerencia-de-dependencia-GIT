@@ -1,20 +1,12 @@
 package org.example;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 public class Main {
-
     public static void main(String[] args) {
-        DateTime dataAtual = new DateTime();
 
-        DateTimeFormatter formatadorData = DateTimeFormat.forPattern("dd/MM/yyyy");
-        DateTimeFormatter formatadorHora = DateTimeFormat.forPattern("HH:mm:ss");
+        DateTimeProvider provider = new DateTimeProvider();
+        GreetingGenerator generator = new GreetingGenerator(provider);
+        String greeting = generator.generateGreetingByTimeOfDay();
 
-        System.out.println("Data atual: " + formatadorData.print(dataAtual));
-        System.out.println("Hora atual: " + formatadorHora.print(dataAtual));
-
-        System.out.println("O projeto foi construído e as dependências foram resolvidas com sucesso!");
+        System.out.println(greeting);
     }
 }
