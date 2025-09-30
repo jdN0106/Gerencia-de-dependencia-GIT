@@ -1,48 +1,59 @@
-# Gerenciamento de Dependências com Maven e Testes Unitários
+# Pipeline de CI/CD para Aplicação Java com GitHub Actions
 
-Este projeto é um exemplo simples em Java para demonstrar os conceitos de gerenciamento de dependências com Apache Maven e a importância dos testes unitários com JUnit e Mockito.
+Este projeto demonstra a criação de um pipeline de CI/CD para uma aplicação Java, utilizando Apache Maven para gerenciamento, JUnit/Mockito para testes e GitHub Actions para automação completa do ciclo de desenvolvimento.
 
-O código foi refatorado para seguir boas práticas de desenvolvimento, como a separação de responsabilidades e a injeção de dependências, permitindo que a lógica de negócio seja testada de forma isolada.
+O código foi estruturado com boas práticas como injeção de dependência, permitindo uma suíte de testes robusta com mais de 20 cenários que validam a lógica de negócio de forma isolada.
 
 ## ✨ Tecnologias Utilizadas
-
-- **Java** (JDK 11+)
-- **Apache Maven** (para gerenciamento de dependências e build do projeto)
-- **Joda-Time** (biblioteca externa para manipulação de data e hora)
-- **JUnit 4** (framework para a criação dos testes unitários)
-- **Mockito** (framework para a criação de "mocks" ou simulações de dependências nos testes)
+* **Java** (JDK 11+)
+* **Apache Maven** (para gerenciamento de dependências e build do projeto)
+* **JUnit 4 & Mockito** (para a criação e simulação dos testes unitários)
+* **GitHub Actions** (para automação do pipeline de CI/CD)
+* **Python** (para o script de notificação por e-mail)
 
 ## ⚙️ Pré-requisitos
-
 Antes de começar, garanta que você tenha os seguintes softwares instalados:
-- **Java Development Kit (JDK)** - Versão 11 ou superior.
-- **Apache Maven** - Versão 3.6 ou superior.
 
-## 🚀 Como Compilar e Testar o Projeto
+* **Java Development Kit (JDK)** - Versão 11 ou superior.
+* **Apache Maven** - Versão 3.6 ou superior.
 
+## 🚀 O Pipeline de CI/CD
+O coração deste projeto é o workflow de automação configurado no GitHub Actions. Ele é acionado a cada `push` na branch `main` e executa 3 jobs em sequência:
+
+### 🧪 Job de Testes (test)
+* Executa a suíte completa com mais de 20 testes unitários.
+* Gera um relatório de testes em HTML e o salva como um artefato para análise.
+
+### 📦 Job de Build (build)
+* Somente é executado se os testes passarem.
+* Compila o código e empacota a aplicação em um arquivo `.jar` executável.
+* Salva o `.jar` final como um artefato.
+
+
+### 📧 Job de Notificação (notify)
+* Somente é executado se o build for bem-sucedido.
+* Roda um script Python que envia um e-mail de notificação de sucesso.
+* As credenciais de e-mail são lidas de forma segura a partir dos Secrets do repositório.
+
+* <img width="635" height="172" alt="image" src="https://github.com/user-attachments/assets/da6e5288-3044-4642-ad5d-ffdb5df36286" />
+
+## ▶️ Como Executar Localmente
 1.  Clone o repositório para a sua máquina local:
     ```bash
-    git clone https://github.com/SEU-USUARIO/Gerencia-de-dependencia-GIT.git
-    cd Gerencia-de-dependencia-GIT
+    git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
     ```
-2.  Use o Maven para compilar o projeto e rodar a suíte de testes unitários:
+2.  Navegue até o diretório do projeto:
+    ```bash
+    cd nome-do-projeto
+    ```
+3.  Use o Maven para compilar o projeto e rodar os testes:
     ```bash
     mvn clean package
     ```
-    Este comando irá baixar as dependências, compilar o código, executar os 10 testes que criamos e, se tudo passar, empacotar a aplicação em um arquivo `.jar`.
+    Este comando irá baixar as dependências, compilar o código, executar os testes e empacotar a aplicação.
 
-## ▶️ Como Executar a Aplicação
-
-Após o comando `mvn clean package` ser executado com sucesso, um artefato executável será gerado na pasta `target/`.
-
-Para executar o programa, utilize o seguinte comando no seu terminal:
-
-```bash
-java -jar target/Exercicio-Dependencia-1.0-SNAPSHOT-jar-with-dependencies.jar
-```
-
-A saída no console será a saudação correspondente à hora atual do seu sistema. Por exemplo:
-
-```
-Boa noite! A data e hora atuais são: ############
-```
+4.  Para executar a aplicação, utilize o seguinte comando:
+    ```bash
+    java -jar target/Exercicio-Dependencia-1.0-SNAPSHOT-jar-with-dependencies.jar
+    ```
+    A saída no console será a saudação correspondente à hora atual do seu sistema.w
