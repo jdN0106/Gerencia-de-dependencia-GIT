@@ -28,7 +28,7 @@ public class GreetingGenerator {
         String timeGreeting;
         int hour = now.getHourOfDay();
 
-        if (hour >= 0 && hour < 12) {
+        if (hour >= 6 && hour < 12) {
             timeGreeting = "Bom dia!";
         } else if (hour >= 12 && hour < 18) {
             timeGreeting = "Boa tarde!";

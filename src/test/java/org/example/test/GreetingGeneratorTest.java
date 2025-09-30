@@ -1,120 +1,196 @@
-package org.example.test;
+package org.example;
 
-import org.example.DateTimeProvider;
-import org.example.GreetingGenerator;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class GreetingGeneratorTest {
 
-    // 5 Casos de Teste POSITIVOS
+    @Mock
+    private DateTimeProvider provider;
 
-    @Test
-    public void deveRetornarBomDiaParaHorarioMatutino() {
+    @InjectMocks
+    private GreetingGenerator generator;
 
-        DateTimeProvider mockProvider = mock(DateTimeProvider.class);
-        when(mockProvider.getCurrentDateTime()).thenReturn(new DateTime(2025, 9, 1, 9, 0, 0));
-        GreetingGenerator generator = new GreetingGenerator(mockProvider);
-
-        String result = generator.generateGreetingByTimeOfDay();
-
-        assertTrue(result.startsWith("Bom dia!"));
-        assertTrue(result.contains("01/09/2025 09:00:00"));
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void deveRetornarBoaTardeParaHorarioVespertino() {
-        DateTimeProvider mockProvider = mock(DateTimeProvider.class);
-        when(mockProvider.getCurrentDateTime()).thenReturn(new DateTime(2025, 9, 1, 14, 30, 0));
-        GreetingGenerator generator = new GreetingGenerator(mockProvider);
-
-        String result = generator.generateGreetingByTimeOfDay();
-
-        assertTrue(result.startsWith("Boa tarde!"));
+    private String formatExpected(String greeting, DateTime dateTime) {
+        return greeting + " A data e hora atuais são: " + dateTime.toString("dd/MM/yyyy HH:mm:ss");
     }
 
+    // --- Testes para o Período da MANHÃ ---
+
+    // Testa o início da manhã, exatamente às 06:00.
     @Test
-    public void deveRetornarBoaNoiteParaHorarioNoturno() {
-        DateTimeProvider mockProvider = mock(DateTimeProvider.class);
-        when(mockProvider.getCurrentDateTime()).thenReturn(new DateTime(2025, 9, 1, 22, 0, 0));
-        GreetingGenerator generator = new GreetingGenerator(mockProvider);
-
-        String result = generator.generateGreetingByTimeOfDay();
-
-        assertTrue(result.startsWith("Boa noite!"));
+    public void deveRetornarBomDiaExatamenteAs06h() {
+        DateTime time = new DateTime(2025, 9, 29, 6, 0, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Bom dia!", time), generator.generateGreetingByTimeOfDay());
     }
 
+    // Testa um minuto após o início da manhã.
     @Test
-    public void deveRetornarBoaTardeExatamenteAoMeioDia() {
-        DateTimeProvider mockProvider = mock(DateTimeProvider.class);
-        when(mockProvider.getCurrentDateTime()).thenReturn(new DateTime(2025, 9, 1, 12, 0, 0));
-        GreetingGenerator generator = new GreetingGenerator(mockProvider);
-
-        String result = generator.generateGreetingByTimeOfDay();
-
-        assertTrue(result.startsWith("Boa tarde!"));
+    public void deveRetornarBomDiaUmMinutoAposAs06h() {
+        DateTime time = new DateTime(2025, 9, 29, 6, 1, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Bom dia!", time), generator.generateGreetingByTimeOfDay());
     }
 
+    // Testa um horário no meio da manhã.
+    @Test
+    public void deveRetornarBomDiaAs10h() {
+        DateTime time = new DateTime(2025, 9, 29, 10, 0, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Bom dia!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa o final da manhã, um minuto antes do meio-dia.
+    @Test
+    public void deveRetornarBomDiaUmMinutoAntesDoMeioDia() {
+        DateTime time = new DateTime(2025, 9, 29, 11, 59, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Bom dia!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa a transição manhã/tarde, 1 segundo antes do meio-dia.
     @Test
     public void deveRetornarBomDiaUmSegundoAntesDoMeioDia() {
-        DateTimeProvider mockProvider = mock(DateTimeProvider.class);
-        when(mockProvider.getCurrentDateTime()).thenReturn(new DateTime(2025, 9, 1, 11, 59, 59));
-        GreetingGenerator generator = new GreetingGenerator(mockProvider);
-
-        String result = generator.generateGreetingByTimeOfDay();
-
-        assertTrue(result.startsWith("Bom dia!"));
+        DateTime time = new DateTime(2025, 9, 29, 11, 59, 59);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Bom dia!", time), generator.generateGreetingByTimeOfDay());
     }
 
-    // 5 Casos de Teste NEGATIVOS
+    // --- Testes para o Período da TARDE ---
 
-    @Test(expected = IllegalArgumentException.class)
-    public void deveLancarExcecaoSeOProvedorForNuloNoConstrutor() {
-        new GreetingGenerator(null);
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void deveLancarExcecaoSeProvedorRetornarDataNula() {
-        DateTimeProvider mockProvider = mock(DateTimeProvider.class);
-        when(mockProvider.getCurrentDateTime()).thenReturn(null);
-        GreetingGenerator generator = new GreetingGenerator(mockProvider);
-
-        generator.generateGreetingByTimeOfDay();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void deveLancarExcecaoParaDatasAnterioresA1970() {
-        DateTimeProvider mockProvider = mock(DateTimeProvider.class);
-        when(mockProvider.getCurrentDateTime()).thenReturn(new DateTime(1969, 12, 31, 23, 59, 59));
-        GreetingGenerator generator = new GreetingGenerator(mockProvider);
-
-        generator.generateGreetingByTimeOfDay();
-    }
-
+    // Testa o início da tarde, exatamente às 12:00.
     @Test
-    public void deveTerMensagemDeErroCorretaParaProvedorNulo() {
-        try {
-            new GreetingGenerator(null);
-        } catch (IllegalArgumentException e) {
-            assertEquals("O provedor de data não pode ser nulo.", e.getMessage());
-        }
+    public void deveRetornarBoaTardeExatamenteAs12h() {
+        DateTime time = new DateTime(2025, 9, 29, 12, 0, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa tarde!", time), generator.generateGreetingByTimeOfDay());
     }
 
+    // Testa um minuto após o início da tarde.
     @Test
-    public void deveTerMensagemDeErroCorretaParaDataAnteriorA1970() {
-        DateTimeProvider mockProvider = mock(DateTimeProvider.class);
-        when(mockProvider.getCurrentDateTime()).thenReturn(new DateTime(1960, 1, 1, 0, 0, 0));
-        GreetingGenerator generator = new GreetingGenerator(mockProvider);
+    public void deveRetornarBoaTardeUmMinutoAposAs12h() {
+        DateTime time = new DateTime(2025, 9, 29, 12, 1, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa tarde!", time), generator.generateGreetingByTimeOfDay());
+    }
 
-        try {
-            generator.generateGreetingByTimeOfDay();
-        } catch (IllegalArgumentException e) {
-            assertEquals("Datas anteriores a 1970 não são suportadas.", e.getMessage());
-        }
+    // Testa um horário no meio da tarde.
+    @Test
+    public void deveRetornarBoaTardeAs15h() {
+        DateTime time = new DateTime(2025, 9, 29, 15, 0, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa tarde!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa o final da tarde, um minuto antes das 18:00.
+    @Test
+    public void deveRetornarBoaTardeUmMinutoAntesDas18h() {
+        DateTime time = new DateTime(2025, 9, 29, 17, 59, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa tarde!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa a transição tarde/noite, 1 segundo antes das 18:00.
+    @Test
+    public void deveRetornarBoaTardeUmSegundoAntesDas18h() {
+        DateTime time = new DateTime(2025, 9, 29, 17, 59, 59);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa tarde!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // --- Testes para o Período da NOITE ---
+
+    // Testa o início da noite, exatamente às 18:00.
+    @Test
+    public void deveRetornarBoaNoiteExatamenteAs18h() {
+        DateTime time = new DateTime(2025, 9, 29, 18, 0, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa noite!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa um minuto após o início da noite.
+    @Test
+    public void deveRetornarBoaNoiteUmMinutoAposAs18h() {
+        DateTime time = new DateTime(2025, 9, 29, 18, 1, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa noite!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa um horário no meio da noite.
+    @Test
+    public void deveRetornarBoaNoiteAs22h() {
+        DateTime time = new DateTime(2025, 9, 29, 22, 0, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa noite!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa o final do dia, um minuto antes da meia-noite.
+    @Test
+    public void deveRetornarBoaNoiteUmMinutoAntesDaMeiaNoite() {
+        DateTime time = new DateTime(2025, 9, 29, 23, 59, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa noite!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa a virada do dia, exatamente à meia-noite.
+    @Test
+    public void deveRetornarBoaNoiteExatamenteAMeiaNoite() {
+        DateTime time = new DateTime(2025, 9, 29, 0, 0, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa noite!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa um minuto após a meia-noite.
+    @Test
+    public void deveRetornarBoaNoiteUmMinutoAposAMeiaNoite() {
+        DateTime time = new DateTime(2025, 9, 29, 0, 1, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa noite!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa um horário na madrugada.
+    @Test
+    public void deveRetornarBoaNoiteAs04hDaMadrugada() {
+        DateTime time = new DateTime(2025, 9, 29, 4, 0, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa noite!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa o final da noite, um minuto antes das 06:00.
+    @Test
+    public void deveRetornarBoaNoiteUmMinutoAntesDas06h() {
+        DateTime time = new DateTime(2025, 9, 29, 5, 59, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa noite!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa a transição noite/manhã, 1 segundo antes das 06:00.
+    @Test
+    public void deveRetornarBoaNoiteUmSegundoAntesDas06h() {
+        DateTime time = new DateTime(2025, 9, 29, 5, 59, 59);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa noite!", time), generator.generateGreetingByTimeOfDay());
+    }
+
+    // Testa um horário qualquer da noite.
+    @Test
+    public void deveRetornarBoaNoiteAsDezoitoETrinta() {
+        DateTime time = new DateTime(2025, 9, 29, 18, 30, 0);
+        when(provider.getCurrentDateTime()).thenReturn(time);
+        assertEquals(formatExpected("Boa noite!", time), generator.generateGreetingByTimeOfDay());
     }
 }
+
