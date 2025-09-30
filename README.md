@@ -18,33 +18,36 @@ Antes de começar, garanta que você tenha os seguintes softwares instalados:
 * **Apache Maven** - Versão 3.6 ou superior.
 
 ## 🚀 O Pipeline de CI/CD
-O coração deste projeto é o workflow de automação configurado no GitHub Actions. Ele é acionado a cada `push` na branch `main` e executa 3 jobs em sequência:
+O coração deste projeto é o workflow de automação configurado no GitHub Actions. Ele é acionado a cada `push` na branch `main` e executa 4 jobs, incluindo uma etapa em paralelo para otimização.
 
 ### 🧪 Job de Testes (test)
 * Executa a suíte completa com mais de 20 testes unitários.
 * Gera um relatório de testes em HTML e o salva como um artefato para análise.
 
+### 🎨 Job de Verificação de Estilo (lint)
+* Roda em paralelo com o job de testes.
+* Simula uma verificação de estilo no código para garantir a qualidade e consistência.
+
 ### 📦 Job de Build (build)
-* Somente é executado se os testes passarem.
+* Somente é executado se os testes passarem com sucesso.
 * Compila o código e empacota a aplicação em um arquivo `.jar` executável.
 * Salva o `.jar` final como um artefato.
 
-
 ### 📧 Job de Notificação (notify)
-* Somente é executado se o build for bem-sucedido.
+* Somente é executado se os jobs de `build` e `lint` forem bem-sucedidos.
 * Roda um script Python que envia um e-mail de notificação de sucesso.
 * As credenciais de e-mail são lidas de forma segura a partir dos Secrets do repositório.
 
-* <img width="635" height="172" alt="image" src="https://github.com/user-attachments/assets/da6e5288-3044-4642-ad5d-ffdb5df36286" />
+* <img width="635" alt="Visualização do pipeline com jobs em paralelo" src="https://github.com/user-attachments/assets/da6e5288-3044-4642-ad5d-ffdb5df36286">
 
 ## ▶️ Como Executar Localmente
 1.  Clone o repositório para a sua máquina local:
     ```bash
-    git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
+    git clone https://github.com/jdN0106/Gerencia-de-dependencia-GIT.git
     ```
 2.  Navegue até o diretório do projeto:
     ```bash
-    cd nome-do-projeto
+    cd Gerencia-de-dependencia-GIT
     ```
 3.  Use o Maven para compilar o projeto e rodar os testes:
     ```bash
@@ -56,4 +59,4 @@ O coração deste projeto é o workflow de automação configurado no GitHub Act
     ```bash
     java -jar target/Exercicio-Dependencia-1.0-SNAPSHOT-jar-with-dependencies.jar
     ```
-    A saída no console será a saudação correspondente à hora atual do seu sistema.w
+    A saída no console será a saudação correspondente à hora atual do seu sistema.
